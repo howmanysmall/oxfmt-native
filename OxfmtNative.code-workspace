@@ -1,6 +1,32 @@
 {
 	"extensions": {
-		"recommendations": ["oxc.oxc-vscode"],
+		"recommendations": [
+			"aaron-bond.better-comments",
+			"biomejs.biome",
+			"anthropic.claude-code",
+			"saoudrizwan.claude-dev",
+			"streetsidesoftware.code-spell-checker",
+			"redhat.vscode-yaml",
+			"pflannery.vscode-versionlens",
+			"gruntfuggly.todo-tree",
+			"n3rds-inc.time",
+			"johnnymorganz.stylua-hms",
+			"howmanysmall.small-theme",
+			"mkhl.shfmt",
+			"timonwong.shellcheck",
+			"rust-lang.rust-analyzer",
+			"oxc.oxc-vscode",
+			"pkief.material-icon-theme",
+			"davidanson.vscode-markdownlint",
+			"eamodio.gitlens",
+			"github.vscode-pull-request-github",
+			"github.vscode-github-actions",
+			"tamasfe.even-better-toml",
+			"usernamehw.errorlens",
+			"fill-labs.dependi",
+			"softwaredotcom.swdc-vscode",
+			"openai.chatgpt",
+		],
 	},
 	"folders": [
 		{
