@@ -1,0 +1,58 @@
+{
+	"author": "HowManySmall",
+	"bin": {
+		"oxfmt-native": "./bin.js"
+	},
+	"description": "Native Rust binary wrapper for oxfmt",
+	"devDependencies": {
+		"@biomejs/biome": "^2.3.7",
+		"@total-typescript/ts-reset": "^0.6.1",
+		"@types/bun": "latest",
+		"@typescript/native-preview": "^7.0.0-dev.20251122.1",
+		"bumpp": "^10.3.1",
+		"lint-staged": "^16.2.7",
+		"oxfmt": "^0.14.0",
+		"oxlint": "^1.29.0",
+		"oxlint-tsgolint": "^0.8.1",
+		"simple-git-hooks": "^2.13.1",
+		"type-fest": "^5.2.0"
+	},
+	"files": ["bin.js", "bin.ts"],
+	"lint-staged": {
+		"*": "bun run oxc --fix"
+	},
+	"module": "bin.ts",
+	"name": "@pobammer-ts/oxfmt-native",
+	"optionalDependencies": {
+		"@pobammer-ts/oxfmt-native-darwin-arm64": "0.1.0",
+		"@pobammer-ts/oxfmt-native-darwin-x64": "0.1.0",
+		"@pobammer-ts/oxfmt-native-linux-x64-gnu": "0.1.0",
+		"@pobammer-ts/oxfmt-native-win32-x64-msvc": "0.1.0"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/howmanysmall/oxfmt-native.git"
+	},
+	"scripts": {
+		"biome:ci": "bun x --bun biome ci",
+		"build": "bun build --production --target=node --outfile=./bin.js ./bin.ts",
+		"format": "bun x oxfmt",
+		"lint": "bun run oxc . && bun x --bun biome lint .",
+		"oxc": "bun x oxlint --type-aware",
+		"prepare": "bun x --bun simple-git-hooks",
+		"prepublishOnly": "bun run build",
+		"release": "bumpp",
+		"typecheck": "bun x --bun tsgo --noEmit"
+	},
+	"simple-git-hooks": {
+		"pre-commit": "bun run lint-staged"
+	},
+	"type": "module",
+	"version": "0.1.0"
+}

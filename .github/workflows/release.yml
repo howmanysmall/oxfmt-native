@@ -1,0 +1,100 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+  id-token: write # CRITICAL: Required for OIDC
+
+jobs:
+  build-and-publish-platform:
+    name: Build & Publish ${{ matrix.platform-name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            platform-name: linux-x64-gnu
+            args: "linux x64 gnu"
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            platform-name: darwin-x64
+            args: "darwin x64"
+          - os: macos-14
+            target: aarch64-apple-darwin
+            platform-name: darwin-arm64
+            args: "darwin arm64"
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            platform-name: win32-x64-msvc
+            args: "win32 x64"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      # NPM is required for OIDC publishing
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Build Binary
+        run: cargo build --release --target ${{ matrix.target }}
+
+      - name: Generate Manifest
+        run: bun run scripts/publish-native.ts ${{ matrix.args }}
+
+      # Copy binary to npm/<platform> folder
+      - name: Stage Binary (Unix)
+        if: matrix.os != 'windows-latest'
+        run: cp target/${{ matrix.target }}/release/oxfmt-native npm/${{ matrix.platform-name }}/
+
+      - name: Stage Binary (Windows)
+        if: matrix.os == 'windows-latest'
+        run: copy target\${{ matrix.target }}\release\oxfmt-native.exe npm\${{ matrix.platform-name }}\
+
+      - name: Publish Platform Package
+        working-directory: npm/${{ matrix.platform-name }}
+        run: npm publish --provenance --access public
+
+  publish-wrapper:
+    needs: build-and-publish-platform
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Build Wrapper
+        run: bun run build
+
+      - name: Publish Main Package
+        run: npm publish --provenance --access public

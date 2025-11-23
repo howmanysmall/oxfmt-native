@@ -1,0 +1,22 @@
+[workspace]
+members = ["."]
+
+[package]
+authors = ["HowManySmall"]
+edition = "2021"
+name = "oxfmt-native"
+version = "0.1.0"
+
+[dependencies]
+oxc_allocator = "0.98.0"
+oxc_codegen = "0.98.0"
+oxc_parser = "0.98.0"
+oxc_span = "0.98.0"
+
+[lints.rust]
+warnings = "deny"
+
+[lints.clippy]
+all = "deny"
+nursery = "deny"
+pedantic = "deny"
