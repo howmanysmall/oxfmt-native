@@ -58,7 +58,7 @@ jobs:
         run: cargo build --release --target ${{ matrix.target }}
 
       - name: Generate Manifest
-        run: bun run scripts/publish-native.ts ${{ matrix.args }}
+        run: bun run scripts/build-native.ts ${{ matrix.args }}
 
       # Copy binary to npm/<platform> folder
       - name: Stage Binary (Unix)
