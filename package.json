@@ -48,7 +48,7 @@
 		"oxc": "bun x oxlint --type-aware",
 		"prepare": "bun x --bun simple-git-hooks",
 		"prepublishOnly": "bun run build",
-		"release": "bumpp",
+		"release": "bumpp --execute 'bun run ./scripts/sync-dependencies.ts'",
 		"typecheck": "bun x --bun tsgo --noEmit"
 	},
 	"simple-git-hooks": {
