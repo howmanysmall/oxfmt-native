@@ -26,6 +26,7 @@
 			"fill-labs.dependi",
 			"softwaredotcom.swdc-vscode",
 			"openai.chatgpt",
+			"dotenv.dotenv-vscode",
 		],
 	},
 	"folders": [
